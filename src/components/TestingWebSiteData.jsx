@@ -17,7 +17,7 @@ export default function TestingWebSiteData() {
       const res = await fetch("/api/check-web-image-prompt", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ businessIdea }),
+        body: JSON.stringify({ businessIdea })
       });
 
       const data = await res.json();

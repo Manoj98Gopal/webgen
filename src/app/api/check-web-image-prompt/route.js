@@ -13,16 +13,28 @@ export async function POST(req) {
       );
     }
 
-    const prompt = `You are an expert website content creator and AI image prompt specialist.
+    const prompt = `
+You are an expert website content creator and AI image prompt specialist for photorealistic AI image generation.
 
-The user will provide a business idea, but it may contain spelling mistakes, typos, or incomplete words.
+The user will provide a business idea, which may contain spelling mistakes, typos, or incomplete words.
+
+CRITICAL INSTRUCTIONS:
+- You MUST return ONLY a valid JSON object
+- Do NOT include any explanations, comments, or text outside the JSON
+- Do NOT wrap the JSON in markdown code blocks
+- Start your response directly with the opening curly brace {
+- End your response with the closing curly brace }
 
 Your task:
-1. First, carefully interpret and correct the business idea if needed.
+1. Interpret the intended meaning of the business idea and correct spelling/grammar mistakes before starting.
 2. Based on the corrected business idea, generate **professional, engaging, and industry-specific** website content in JSON format exactly matching the structure below.
 3. For every image object (e.g., "heroImage", "about.image", "services.items[x].image"):
-   - The "url" field must contain a **highly detailed, realistic AI image prompt** describing the scene, subject, style, lighting, and mood. Avoid generic placeholders. Make each one visually rich and specific to the business type and section.
-   - Add a "size" field, choosing only from this list:
+   - The "url" field must contain a **highly detailed, realistic AI image prompt** specifically designed for Freepik AI (Mystic mode, style: "photo", color: "color", lighting: "natural").
+   - Describe the subject, environment, perspective, textures, colors, lighting, and mood in rich detail.
+   - Use cinematic, sensory language that would make a stunning, natural, ultra-realistic photo.
+   - Each prompt must be unique to its section — do not repeat prompts.
+   - Avoid generic placeholders like "[business core scene]" — directly write the vivid description.
+   - Add a "size" field using ONLY one value from this list:
      [
        "square_1_1",
        "classic_4_3",
@@ -38,13 +50,23 @@ Your task:
        "social_5_4",
        "social_post_4_5"
      ]
-4. Exception: For gallery.images[], always leave "url": "" (empty string), but still include a "size" field.
-5. Do NOT output anything except a valid JSON object in the exact format given.
-6. If any required value is unknown, create realistic, credible placeholder data that matches the business type.
-7. Avoid generic placeholders like "Lorem ipsum" — use realistic industry-specific terms.
-8. Write in proper English with correct grammar and natural flow.
-9. Keep a professional but inviting tone.
-10. Never break the JSON format.
+4. For the **heroImage**:
+   - Make it the most captivating image possible.
+   - Wide cinematic composition, ultra sharp, high resolution.
+   - Real-life setting with rich textures, natural golden hour or soft daylight.
+   - Professional depth of field and color grading.
+   - Scene must inspire and clearly reflect the business's core essence.
+5. For the **about** section image:
+   - Focus on the human side — behind-the-scenes, craftsmanship, candid interactions, or warm welcoming spaces.
+6. For **services items**:
+   - Each service gets its own distinct and descriptive image prompt.
+   - Clearly show the product/service in use, close-ups of quality details, or authentic customer interactions.
+7. For **gallery.images[]**:
+   - Keep "url": "" (empty string), but still include a "size" field.
+8. Output ONLY the valid JSON object in the exact structure given — no explanations, no extra text.
+9. If any required value is unknown, create realistic, industry-specific content.
+10. Maintain a professional yet inviting tone in text fields.
+11. Ensure perfect grammar and natural flow.
 
 STRUCTURE:
 {
@@ -72,7 +94,7 @@ STRUCTURE:
     "cta2": {"label": "Secondary CTA", "link": "#contact"},
     "heroImage": {
       "id": "hero-img",
-      "url": "Realistic detailed image prompt for hero section...",
+      "url": "Ultra-realistic wide cinematic photo describing the main essence of the business in action, captured with golden hour light, high texture detail, professional depth of field, natural shadows, inviting atmosphere — no text overlay",
       "size": "widescreen_16_9"
     },
     "id": "hero"
@@ -83,7 +105,7 @@ STRUCTURE:
     "description": "Well-written business story including establishment year, mission, and unique value proposition",
     "image": {
       "id": "about-img",
-      "url": "Realistic detailed image prompt for about section...",
+      "url": "Warm, candid photograph of the team or workspace, showing authentic human interaction, subtle background details, natural lighting, realistic tones",
       "size": "classic_4_3"
     },
     "highlights": [
@@ -105,7 +127,7 @@ STRUCTURE:
         "description": "Detailed description of the service/product",
         "image": {
           "id": "service-1",
-          "url": "Realistic detailed image prompt for this service...",
+          "url": "Close-up shot showing intricate details of the product/service in action, crisp textures, lifelike colors, sharp focus, and natural light",
           "size": "square_1_1"
         }
       },
@@ -114,7 +136,7 @@ STRUCTURE:
         "description": "Detailed description of the service/product",
         "image": {
           "id": "service-2",
-          "url": "Realistic detailed image prompt for this service...",
+          "url": "Dynamic photo capturing the energy of the service/product in use, realistic motion blur, vivid tones, immersive composition",
           "size": "square_1_1"
         }
       },
@@ -123,7 +145,7 @@ STRUCTURE:
         "description": "Detailed description of the service/product", 
         "image": {
           "id": "service-3",
-          "url": "Realistic detailed image prompt for this service...",
+          "url": "Stylized yet realistic shot of the service/product setup, natural depth of field, well-balanced daylight, rich materials and surfaces",
           "size": "square_1_1"
         }
       },
@@ -132,7 +154,7 @@ STRUCTURE:
         "description": "Detailed description of the service/product",
         "image": {
           "id": "service-4",
-          "url": "Realistic detailed image prompt for this service...",
+          "url": "Wide shot showing the product/service environment with people engaging naturally, soft shadows, real textures",
           "size": "square_1_1"
         }
       }
@@ -216,30 +238,68 @@ STRUCTURE:
 }
 
 Business Idea: "${businessIdea}"
+
+Remember: Return ONLY the JSON object, starting with { and ending with }. No explanations or additional text.
 `;
 
     const { text } = await generateText({
       model: openai("gpt-4"),
       prompt,
       temperature: 0.7,
-      maxTokens: 3000
+      maxTokens: 4000 // Increased token limit
     });
 
     let jsonData;
     try {
-      // Clean the response in case there's any markdown formatting
-      const cleanedText = text.replace(/```json\n?|\n?```/g, "").trim();
+      // More robust text cleaning
+      let cleanedText = text.trim();
+      
+      // Remove markdown code blocks if present
+      cleanedText = cleanedText.replace(/```json\n?/g, "").replace(/\n?```/g, "");
+      
+      // Remove any text before the first { and after the last }
+      const firstBrace = cleanedText.indexOf('{');
+      const lastBrace = cleanedText.lastIndexOf('}');
+      
+      if (firstBrace === -1 || lastBrace === -1) {
+        throw new Error("No valid JSON object found in response");
+      }
+      
+      cleanedText = cleanedText.substring(firstBrace, lastBrace + 1);
+      
+      // Additional cleaning: remove any trailing text after the JSON
+      cleanedText = cleanedText.trim();
+      
+      console.log("Attempting to parse JSON:", cleanedText.substring(0, 200) + "...");
+      
       jsonData = JSON.parse(cleanedText);
     } catch (err) {
       console.error("JSON parsing error:", err);
-      return NextResponse.json(
-        {
-          error: "AI returned invalid JSON",
-          raw: text,
-          parseError: err.message
-        },
-        { status: 500 }
-      );
+      console.error("Raw AI response:", text);
+      
+      // Try one more time with even more aggressive cleaning
+      try {
+        let fallbackText = text;
+        
+        // Look for JSON pattern more aggressively
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (jsonMatch) {
+          fallbackText = jsonMatch[0];
+          jsonData = JSON.parse(fallbackText);
+        } else {
+          throw new Error("Could not extract valid JSON from response");
+        }
+      } catch (fallbackErr) {
+        return NextResponse.json(
+          {
+            error: "AI returned invalid JSON format",
+            details: "The AI response could not be parsed as JSON",
+            rawResponse: text.substring(0, 500) + "...", // Only show first 500 chars for debugging
+            parseError: err.message
+          },
+          { status: 500 }
+        );
+      }
     }
 
     // Validate that we have the required structure
@@ -252,6 +312,17 @@ Business Idea: "${businessIdea}"
       return NextResponse.json(
         {
           error: `Missing required sections: ${missingSections.join(", ")}`,
+          data: jsonData
+        },
+        { status: 500 }
+      );
+    }
+
+    // Additional validation to ensure critical fields exist
+    if (!jsonData.hero?.heading || !jsonData.about?.description || !jsonData.services?.items?.length) {
+      return NextResponse.json(
+        {
+          error: "Generated content is missing critical fields",
           data: jsonData
         },
         { status: 500 }
