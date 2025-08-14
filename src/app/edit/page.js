@@ -1,17 +1,16 @@
 "use client";
 
-import React, { useEffect } from "react";
-import Navbar from "./templateSections/Navbar";
-import HeroSection from "./templateSections/HeroSection";
-import About from "./templateSections/About";
-import Services from "./templateSections/Services";
-import WhyChooseUs from "./templateSections/WhyChooseUs";
-import Gallery from "./templateSections/Gallery";
-import Testimonials from "./templateSections/Testimonials";
-import ContactUs from "./templateSections/ContactUs";
-import Footer from "./templateSections/Footer";
-import { useAppContext } from "@/hook/useAppContext";
-import { useRouter } from "next/navigation";
+import EditTemplates from "@/components/EditTemplate/EditTemplates";
+import About from "@/components/templateSections/About";
+import ContactUs from "@/components/templateSections/ContactUs";
+import Footer from "@/components/templateSections/Footer";
+import Gallery from "@/components/templateSections/Gallery";
+import HeroSection from "@/components/templateSections/HeroSection";
+import Navbar from "@/components/templateSections/Navbar";
+import Services from "@/components/templateSections/Services";
+import Testimonials from "@/components/templateSections/Testimonials";
+import WhyChooseUs from "@/components/templateSections/WhyChooseUs";
+import React, { useState } from "react";
 
 const data = {
   navbar: {
@@ -235,35 +234,25 @@ const data = {
   }
 };
 
-
-
-
-const DemoTemplate = () => {
-  const { commonDetails } = useAppContext();
-
-  const webData = commonDetails["webData"];
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (webData === null) {
-      router.push("/");
-    }
-  }, [webData]);
+const page = () => {
+  const [webData, setWebData] = useState(data);
+  const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white">
-      <Navbar {...webData?.navbar} />
-      <HeroSection {...webData?.hero} />
-      <About {...webData?.about} />
-      <Services {...webData?.services} />
-      <WhyChooseUs {...webData?.whyChooseUs} />
-      <Gallery {...webData?.gallery} />
-      <Testimonials {...webData?.testimonials} />
-      <ContactUs {...webData?.contact} />
-      <Footer {...webData?.footer} />
-    </div>
+    <EditTemplates isEditing={isEditing} setIsEditing={setIsEditing}>
+      <div className="min-h-screen bg-gray-900 text-white">
+        <Navbar {...webData?.navbar} />
+        <HeroSection {...webData?.hero} />
+        <About {...webData?.about} />
+        <Services {...webData?.services} />
+        <WhyChooseUs {...webData?.whyChooseUs} />
+        <Gallery {...webData?.gallery} />
+        <Testimonials {...webData?.testimonials} />
+        <ContactUs {...webData?.contact} />
+        <Footer {...webData?.footer} />
+      </div>
+    </EditTemplates>
   );
 };
 
-export default DemoTemplate;
+export default page;

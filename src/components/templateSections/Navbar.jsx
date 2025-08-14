@@ -1,12 +1,19 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
+import { Button } from "../ui/button";
 
-const Navbar = ({ logo, links }) => {
+const Navbar = ({ logo, links, isInsideEditTemplate = false }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 w-full bg-black/80 backdrop-blur-md z-50 px-6 py-4">
+    <nav
+      className="w-full bg-black/80 backdrop-blur-md z-50 px-6 py-4"
+      style={{
+        position: isInsideEditTemplate ? "" : "fixed",
+        top: 0
+      }}
+    >
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         {logo?.isImage ? (
