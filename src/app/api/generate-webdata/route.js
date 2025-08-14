@@ -15,33 +15,64 @@ export async function POST(req) {
     }
 
     // Step 1: Generate website content with image prompts in URL fields
-    const contentPrompt = `
-You are an expert website content creator and image prompt specialist.
+ 
 
-The user will provide a business idea, but it may contain spelling mistakes, typos, or incomplete words.
+ const contentPrompt = `
+You are an expert website content creator and AI image prompt specialist for photorealistic AI image generation.
+
+The user will provide a business idea, which may contain spelling mistakes, typos, or incomplete words.
+
+CRITICAL INSTRUCTIONS:
+- You MUST return ONLY a valid JSON object
+- Do NOT include any explanations, comments, or text outside the JSON
+- Do NOT wrap the JSON in markdown code blocks
+- Start your response directly with the opening curly brace {
+- End your response with the closing curly brace }
+
 Your task:
-1. First, carefully interpret and correct the business idea if needed.
+1. Interpret the intended meaning of the business idea and correct spelling/grammar mistakes before starting.
 2. Based on the corrected business idea, generate **professional, engaging, and industry-specific** website content in JSON format exactly matching the structure below.
-3. For ALL image "url" fields, instead of leaving them empty, provide detailed, realistic image prompts that are specific to the business and the image context.
+3. For every image object (e.g., "heroImage", "about.image", "services.items[x].image"):
+   - The "url" field must contain a **highly detailed, realistic AI image prompt** specifically designed for Freepik AI (Mystic mode, style: "photo", color: "color", lighting: "natural").
+   - Describe the subject, environment, perspective, textures, colors, lighting, and mood in rich detail.
+   - Use cinematic, sensory language that would make a stunning, natural, ultra-realistic photo.
+   - Each prompt must be unique to its section — do not repeat prompts.
+   - Avoid generic placeholders like "[business core scene]" — directly write the vivid description.
+   - Add a "size" field using ONLY one value from this list:
+     [
+       "square_1_1",
+       "classic_4_3",
+       "traditional_3_4",
+       "widescreen_16_9",
+       "social_story_9_16",
+       "smartphone_horizontal_20_9",
+       "smartphone_vertical_9_20",
+       "standard_3_2",
+       "portrait_2_3",
+       "horizontal_2_1",
+       "vertical_1_2",
+       "social_5_4",
+       "social_post_4_5"
+     ]
+4. For the **heroImage**:
+   - Make it the most captivating image possible.
+   - Wide cinematic composition, ultra sharp, high resolution.
+   - Real-life setting with rich textures, natural golden hour or soft daylight.
+   - Professional depth of field and color grading.
+   - Scene must inspire and clearly reflect the business's core essence.
+5. For the **about** section image:
+   - Focus on the human side — behind-the-scenes, craftsmanship, candid interactions, or warm welcoming spaces.
+6. For **services items**:
+   - Each service gets its own distinct and descriptive image prompt.
+   - Clearly show the product/service in use, close-ups of quality details, or authentic customer interactions.
+7. For **gallery.images[]**:
+   - Keep "url": "" (empty string), but still include a "size" field.
+8. Output ONLY the valid JSON object in the exact structure given — no explanations, no extra text.
+9. If any required value is unknown, create realistic, industry-specific content.
+10. Maintain a professional yet inviting tone in text fields.
+11. Ensure perfect grammar and natural flow.
 
-Do NOT output anything except a valid JSON object in the exact format given.  
-Do NOT include extra explanations, markdown formatting, or additional text.
-
-If any required value is unknown, create realistic, credible placeholder data that matches the business type.
-
-For image prompts and sizes in "url" and "size" fields:
-- Make prompts specific to the business type and section context
-- Keep prompts under 80 characters for best AI image generation
-- Focus on professional, realistic imagery
-- Include relevant objects, people, settings for the business
-- Choose appropriate sizes: "square_1_1", "landscape_4_3", "portrait_3_4", "landscape_16_9"
-- Hero images should typically be "landscape_4_3" or "landscape_16_9"
-- Service/product images work well as "square_1_1"
-- About images can be "landscape_4_3"
-- Gallery images will reuse hero, about, and services images
-
-The structure must be:
-
+STRUCTURE:
 {
   "navbar": {
     "show": true,
@@ -65,14 +96,22 @@ The structure must be:
     "subheading": "Compelling subheading describing the business",
     "cta1": {"label": "Primary CTA", "link": "#services"},
     "cta2": {"label": "Secondary CTA", "link": "#contact"},
-    "heroImage": {"id": "hero-img", "url": "detailed image prompt for hero section", "size": "landscape_4_3"},
+    "heroImage": {
+      "id": "hero-img",
+      "url": "Ultra-realistic wide cinematic photo describing the main essence of the business in action, captured with golden hour light, high texture detail, professional depth of field, natural shadows, inviting atmosphere — no text overlay",
+      "size": "widescreen_16_9"
+    },
     "id": "hero"
   },
   "about": {
     "show": true,
     "heading": "About Us / Our Story",
     "description": "Well-written business story including establishment year, mission, and unique value proposition",
-    "image": {"id": "about-img", "url": "detailed image prompt for about section", "size": "landscape_4_3"},
+    "image": {
+      "id": "about-img",
+      "url": "Warm, candid photograph of the team or workspace, showing authentic human interaction, subtle background details, natural lighting, realistic tones",
+      "size": "classic_4_3"
+    },
     "highlights": [
       "Key highlight 1",
       "Key highlight 2",
@@ -90,22 +129,38 @@ The structure must be:
       {
         "title": "Service/Product 1",
         "description": "Detailed description of the service/product",
-        "image": {"id": "service-1", "url": "detailed image prompt for this specific service", "size": "square_1_1"}
+        "image": {
+          "id": "service-1",
+          "url": "Close-up shot showing intricate details of the product/service in action, crisp textures, lifelike colors, sharp focus, and natural light",
+          "size": "square_1_1"
+        }
       },
       {
         "title": "Service/Product 2", 
         "description": "Detailed description of the service/product",
-        "image": {"id": "service-2", "url": "detailed image prompt for this specific service", "size": "square_1_1"}
+        "image": {
+          "id": "service-2",
+          "url": "Dynamic photo capturing the energy of the service/product in use, realistic motion blur, vivid tones, immersive composition",
+          "size": "square_1_1"
+        }
       },
       {
         "title": "Service/Product 3",
         "description": "Detailed description of the service/product", 
-        "image": {"id": "service-3", "url": "detailed image prompt for this specific service", "size": "square_1_1"}
+        "image": {
+          "id": "service-3",
+          "url": "Stylized yet realistic shot of the service/product setup, natural depth of field, well-balanced daylight, rich materials and surfaces",
+          "size": "square_1_1"
+        }
       },
       {
         "title": "Service/Product 4",
         "description": "Detailed description of the service/product",
-        "image": {"id": "service-4", "url": "detailed image prompt for this specific service", "size": "square_1_1"}
+        "image": {
+          "id": "service-4",
+          "url": "Wide shot showing the product/service environment with people engaging naturally, soft shadows, real textures",
+          "size": "square_1_1"
+        }
       }
     ],
     "cta": "Learn More / View All"
@@ -115,12 +170,12 @@ The structure must be:
     "show": true,
     "heading": "Gallery / Showcase",
     "images": [
-      {"id": "gallery-1", "url": "", "size": "square_1_1"},
-      {"id": "gallery-2", "url": "", "size": "landscape_4_3"},
-      {"id": "gallery-3", "url": "", "size": "portrait_3_4"},
-      {"id": "gallery-4", "url": "", "size": "square_1_1"},
-      {"id": "gallery-5", "url": "", "size": "landscape_4_3"},
-      {"id": "gallery-6", "url": "", "size": "portrait_3_4"}
+      {"id": "gallery-1", "url": "", "size": "portrait_2_3"},
+      {"id": "gallery-2", "url": "", "size": "portrait_2_3"},
+      {"id": "gallery-3", "url": "", "size": "portrait_2_3"},
+      {"id": "gallery-4", "url": "", "size": "portrait_2_3"},
+      {"id": "gallery-5", "url": "", "size": "portrait_2_3"},
+      {"id": "gallery-6", "url": "", "size": "portrait_2_3"}
     ]
   },
   "testimonials": {
@@ -186,16 +241,9 @@ The structure must be:
   }
 }
 
-Guidelines:
-- Fix spelling/grammar errors in the provided business idea before generating content.
-- All names, headings, and descriptions must be clear, engaging, and tailored to the business type.
-- Image prompts in "url" fields should be realistic and business-specific.
-- Avoid generic placeholders like "Lorem ipsum" — use realistic industry-specific terms.
-- Write in proper English with correct grammar and natural flow.
-- Keep a professional but inviting tone.
-- Never break the JSON format.
-- Gallery images will be populated automatically from hero, about, and services images.
 Business Idea: "${businessIdea}"
+
+Remember: Return ONLY the JSON object, starting with { and ending with }. No explanations or additional text.
 `;
 
     const { text } = await generateText({
