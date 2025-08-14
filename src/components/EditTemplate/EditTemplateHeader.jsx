@@ -11,7 +11,19 @@ import {
   DropdownMenuSeparator
 } from "../ui/dropdown-menu";
 
-const EditTemplateHeader = ({ onSectionSelect }) => {
+const EditTemplateHeader = ({ handleSectionSelect }) => {
+  const sections = [
+    { label: "Navbar", value: "navbar" },
+    { label: "Hero", value: "hero" },
+    { label: "About", value: "about" },
+    { label: "Services", value: "services" },
+    { label: "Why Choose Us", value: "whyChooseUs" },
+    { label: "Gallery", value: "gallery" },
+    { label: "Testimonials", value: "testimonials" },
+    { label: "Contact Us", value: "contact" },
+    { label: "Footer", value: "footer" }
+  ];
+
   return (
     <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border p-4">
       <div className="flex items-center justify-between">
@@ -28,22 +40,12 @@ const EditTemplateHeader = ({ onSectionSelect }) => {
             <DropdownMenuContent>
               <DropdownMenuLabel>Sections</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              {[
-                "Navbar",
-                "Hero",
-                "About",
-                "Services",
-                "Why Choose Us",
-                "Gallery",
-                "Testimonials",
-                "Contact Us",
-                "Footer"
-              ].map((section) => (
+              {sections.map((section) => (
                 <DropdownMenuItem
-                  key={section}
-                  onClick={() => onSectionSelect?.(section)}
+                  key={section.value}
+                  onClick={() => handleSectionSelect(section)}
                 >
-                  {section}
+                  {section.label}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

@@ -239,7 +239,11 @@ const page = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <EditTemplates isEditing={isEditing} setIsEditing={setIsEditing}>
+    <EditTemplates
+      isEditing={isEditing}
+      setIsEditing={setIsEditing}
+      webData={webData}
+    >
       <div className="min-h-screen bg-gray-900 text-white">
         <Navbar {...webData?.navbar} />
         <HeroSection {...webData?.hero} />
