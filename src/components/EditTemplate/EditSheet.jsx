@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Sheet,
   SheetContent,
@@ -14,6 +14,12 @@ import { Button } from "../ui/button";
 import EditTemplateForm from "./EditTemplateForm";
 
 const EditSheet = ({ isOpen, onOpenChange, sectionName, webData }) => {
+  const [formData, setFormData] = useState(null);
+
+  useEffect(() => {
+    setFormData(webData[sectionName?.value] || {});
+  }, [sectionName]);
+
   return (
     <Sheet open={isOpen} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-[400px] sm:w-[600px]">
@@ -29,7 +35,11 @@ const EditSheet = ({ isOpen, onOpenChange, sectionName, webData }) => {
 
         {/* Editable form or controls for that section */}
         <div className="px-4 h-full overflow-auto">
-          <EditTemplateForm sectionName={sectionName} webData={webData} />
+          <EditTemplateForm
+            sectionName={sectionName}
+            formData={formData}
+            setFormData={setFormData}
+          />
         </div>
 
         <SheetFooter>
