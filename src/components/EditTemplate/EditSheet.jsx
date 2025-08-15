@@ -2,39 +2,52 @@
 
 import React, { useEffect, useState } from "react";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-  SheetFooter,
-  SheetClose
-} from "../ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose
+} from "../ui/dialog";
 import { Button } from "../ui/button";
 import EditTemplateForm from "./EditTemplateForm";
 
-const EditSheet = ({ isOpen, onOpenChange, sectionName, webData }) => {
+const EditSheet = ({
+  isOpen,
+  onOpenChange,
+  sectionName,
+  webData,
+  setWebData
+}) => {
   const [formData, setFormData] = useState(null);
 
   useEffect(() => {
     setFormData(webData[sectionName?.value] || {});
   }, [sectionName]);
 
+  const saveChanges = () => {
+    setWebData((prevData) => ({
+      ...prevData,
+      [sectionName?.value]: formData
+    }));
+    onOpenChange(false);
+  };
+
   return (
-    <Sheet open={isOpen} onOpenChange={onOpenChange}>
-      <SheetContent side="right" className="w-[400px] sm:w-[600px]">
-        <SheetHeader>
-          <SheetTitle>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[600px] p-0">
+        <DialogHeader className="p-6">
+          <DialogTitle>
             {sectionName ? `Edit ${sectionName?.label}` : "Edit Section"}
-          </SheetTitle>
-          <SheetDescription>
+          </DialogTitle>
+          <DialogDescription>
             Make changes to the {sectionName?.label?.toLowerCase()} section
             here.
-          </SheetDescription>
-        </SheetHeader>
+          </DialogDescription>
+        </DialogHeader>
 
-        {/* Editable form or controls for that section */}
-        <div className="px-4 h-full overflow-auto">
+        <div className="px-4 max-h-[70vh] overflow-auto">
           <EditTemplateForm
             sectionName={sectionName}
             formData={formData}
@@ -42,16 +55,16 @@ const EditSheet = ({ isOpen, onOpenChange, sectionName, webData }) => {
           />
         </div>
 
-        <SheetFooter>
-          <div className="flex justify-end gap-2">
-            <SheetClose asChild>
-              <Button variant="outline">Close</Button>
-            </SheetClose>
-            <Button type="submit">Save changes</Button>
-          </div>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
+        <DialogFooter className="p-4">
+          <DialogClose asChild>
+            <Button variant="outline">Close</Button>
+          </DialogClose>
+          <Button type="submit" onClick={saveChanges}>
+            Save changes
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

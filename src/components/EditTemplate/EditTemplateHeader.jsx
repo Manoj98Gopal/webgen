@@ -25,36 +25,31 @@ const EditTemplateHeader = ({ handleSectionSelect }) => {
   ];
 
   return (
-    <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm border-b border-border p-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Template</h1>
-        <div className="flex items-center gap-2">
-          {/* Tertiary action */}
-          <Button variant="secondary">Change template</Button>
+    <div className="fixed bottom-6 right-6 z-50 rounded-lg bg-white shadow-lg p-3 flex gap-2 items-end dark:bg-gray-900">
+      {/* Dropdown for sections */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Choose Section to Edit</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Sections</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {sections.map((section) => (
+            <DropdownMenuItem
+              key={section.value}
+              onClick={() => handleSectionSelect(section)}
+            >
+              {section.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
-          {/* Dropdown for sections */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">Choose Section to Edit</Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Sections</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {sections.map((section) => (
-                <DropdownMenuItem
-                  key={section.value}
-                  onClick={() => handleSectionSelect(section)}
-                >
-                  {section.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+      {/* Change Template */}
+      <Button variant="secondary">Change Template</Button>
 
-          {/* Primary action */}
-          <Button>Publish</Button>
-        </div>
-      </div>
+      {/* Publish */}
+      <Button>Publish</Button>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-const HeroSection = ({ heroImage, heading, subheading, cta1, cta2, id }) => {
+const HeroSection = ({ heroImage, heading, subheading, cta1, cta2, id, bgType, bgValue }) => {
   return (
     <section
       className="relative h-screen flex items-center justify-center"
@@ -8,7 +8,10 @@ const HeroSection = ({ heroImage, heading, subheading, cta1, cta2, id }) => {
     >
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroImage?.url})` }}
+        style={{ 
+          backgroundImage: bgType === "image" ? `url(${heroImage?.url})` : "none",
+          backgroundColor: bgType === "color" ? bgValue : "transparent"
+        }}
       >
         <div className="absolute inset-0 bg-black/60"></div>
       </div>

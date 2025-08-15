@@ -126,34 +126,33 @@ const data = {
     heading: "Inside Spice Garden",
     images: [
       {
-        id: "dafsafd",
+        id: "dd",
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729509/north-indian-food_upbbht.jpg"
       },
       {
-        id: "dsafd",
+        id: "dsfd",
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729509/restaurant-gallery-2_fvzfcq.jpg"
       },
       {
-        id: "dasdf",
+        id: "da45",
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729508/indian-desserts_uq9xkz.jpg"
       },
       {
-        id: "vfuksa",
+        id: "vfuk33sa",
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729509/street-food_yefdfa.jpg"
       },
       {
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729509/south-indian-food_pzed1f.jpg",
-        id: "dasfdasf"
+        id: "da76sfdasf"
       },
       {
-        id: "dasfdae",
+        id: "das33fdae",
         url: "https://res.cloudinary.com/zocials-digital/image/upload/v1754729509/north-indian-food_upbbht.jpg"
       }
     ]
   },
   testimonials: {
     id: "testimonials",
-
     show: true,
     heading: "What Our Guests Say",
     reviews: [
@@ -192,32 +191,9 @@ const data = {
   },
   footer: {
     show: true,
-    links: [
-      {
-        label: "Home",
-        link: "#hero"
-      },
-      {
-        label: "Menu",
-        link: "#services"
-      },
-      {
-        label: "About",
-        link: "#about"
-      },
-      {
-        label: "Gallery",
-        link: "#gallery"
-      },
-      {
-        label: "Contact",
-        link: "#contact"
-      }
-    ],
     socials: {
       facebook: "https://facebook.com/spicegardenblr",
       instagram: "https://instagram.com/spicegardenrestaurant",
-      zomato: "https://zomato.com/spicegarden"
     },
     copyright: "© 2025 Spice Garden Restaurant. All rights reserved."
   },
@@ -243,6 +219,7 @@ const page = () => {
       isEditing={isEditing}
       setIsEditing={setIsEditing}
       webData={webData}
+      setWebData={setWebData}
     >
       <div className="min-h-screen bg-gray-900 text-white">
         <Navbar {...webData?.navbar} />
@@ -253,7 +230,7 @@ const page = () => {
         <Gallery {...webData?.gallery} />
         <Testimonials {...webData?.testimonials} />
         <ContactUs {...webData?.contact} />
-        <Footer {...webData?.footer} />
+        <Footer {...webData?.footer} links={webData?.navbar?.links} />
       </div>
     </EditTemplates>
   );
