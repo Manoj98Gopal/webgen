@@ -8,6 +8,7 @@ import Gallery from "@/components/templateSections/Gallery";
 import HeroSection from "@/components/templateSections/HeroSection";
 import Navbar from "@/components/templateSections/Navbar";
 import Services from "@/components/templateSections/Services";
+import Template2Layout from "@/components/templateSections/template2/Template2Layout";
 import Testimonials from "@/components/templateSections/Testimonials";
 import WhyChooseUs from "@/components/templateSections/WhyChooseUs";
 import React, { useState } from "react";
@@ -193,7 +194,7 @@ const data = {
     show: true,
     socials: {
       facebook: "https://facebook.com/spicegardenblr",
-      instagram: "https://instagram.com/spicegardenrestaurant",
+      instagram: "https://instagram.com/spicegardenrestaurant"
     },
     copyright: "© 2025 Spice Garden Restaurant. All rights reserved."
   },
@@ -210,6 +211,22 @@ const data = {
   }
 };
 
+const Template1 = ({ webData }) => {
+  return (
+    <div className="min-h-screen bg-gray-900 text-white">
+      <Navbar {...webData?.navbar} />
+      <HeroSection {...webData?.hero} />
+      <About {...webData?.about} />
+      <Services {...webData?.services} />
+      <WhyChooseUs {...webData?.whyChooseUs} />
+      <Gallery {...webData?.gallery} />
+      <Testimonials {...webData?.testimonials} />
+      <ContactUs {...webData?.contact} />
+      <Footer {...webData?.footer} links={webData?.navbar?.links} />
+    </div>
+  );
+};
+
 const page = () => {
   const [webData, setWebData] = useState(data);
   const [isEditing, setIsEditing] = useState(false);
@@ -221,17 +238,7 @@ const page = () => {
       webData={webData}
       setWebData={setWebData}
     >
-      <div className="min-h-screen bg-gray-900 text-white">
-        <Navbar {...webData?.navbar} />
-        <HeroSection {...webData?.hero} />
-        <About {...webData?.about} />
-        <Services {...webData?.services} />
-        <WhyChooseUs {...webData?.whyChooseUs} />
-        <Gallery {...webData?.gallery} />
-        <Testimonials {...webData?.testimonials} />
-        <ContactUs {...webData?.contact} />
-        <Footer {...webData?.footer} links={webData?.navbar?.links} />
-      </div>
+      <Template2Layout webData={webData} />
     </EditTemplates>
   );
 };

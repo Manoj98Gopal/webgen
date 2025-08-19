@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator
 } from "../ui/dropdown-menu";
 
-const EditTemplateHeader = ({ handleSectionSelect }) => {
+const EditTemplateHeader = ({ handleSectionSelect, handleChangeTemplate }) => {
   const sections = [
     { label: "Navbar", value: "navbar" },
     { label: "Hero", value: "hero" },
@@ -46,7 +46,9 @@ const EditTemplateHeader = ({ handleSectionSelect }) => {
       </DropdownMenu>
 
       {/* Change Template */}
-      <Button variant="secondary">Change Template</Button>
+      <Button variant="secondary" onClick={handleChangeTemplate}>
+        Change Template
+      </Button>
 
       {/* Publish */}
       <Button>Publish</Button>

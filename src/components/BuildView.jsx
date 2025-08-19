@@ -40,7 +40,7 @@ const BuildView = () => {
     try {
       dispatch(commonActions.webGenLoading(true));
 
-      const response = await fetch("/api/generate-webdata", {
+      const response = await fetch("/api/webpage-data", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

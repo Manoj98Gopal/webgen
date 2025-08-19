@@ -7,7 +7,8 @@ const EditTemplates = ({
   isEditing,
   setIsEditing,
   webData,
-  setWebData
+  setWebData,
+  handleChangeTemplate
 }) => {
   const [selectedSection, setSelectedSection] = useState(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
@@ -32,6 +33,7 @@ const EditTemplates = ({
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         handleSectionSelect={handleSectionSelect}
+        handleChangeTemplate={handleChangeTemplate}
       />
       <EditSheet
         isOpen={isSheetOpen}
