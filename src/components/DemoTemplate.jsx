@@ -268,19 +268,29 @@ const DemoTemplate = () => {
   const { commonDetails } = useAppContext();
   const [data, setData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentTemplateIndex, setCurrentTemplateIndex] = useState("template2");
+  const [currentTemplateIndex, setCurrentTemplateIndex] = useState(null);
 
   const router = useRouter();
 
-  // Get the current template component
-  const CurrentTemplate = templates[currentTemplateIndex]?.component;
-
-  const handleChangeTemplate = () => {
-    const keys = Object.keys(templates); // ["template1", "template2", "template3"]
-    const currentIndex = keys.indexOf(currentTemplateIndex);
-    const nextIndex = (currentIndex + 1) % keys.length; // wrap around
-    setCurrentTemplateIndex(keys[nextIndex]);
+  // Pick a random template
+  const getRandomTemplate = () => {
+    const keys = Object.keys(templates);
+    const randomIndex = Math.floor(Math.random() * keys.length);
+    return keys[randomIndex];
   };
+
+  useEffect(() => {
+    // Check if template is already stored
+    let storedTemplate = getFromLocalStore("selectedTemplate");
+
+    if (!storedTemplate) {
+      // Pick a random template if none stored
+      storedTemplate = getRandomTemplate();
+      setToLocalStore("selectedTemplate", storedTemplate);
+    }
+
+    setCurrentTemplateIndex(storedTemplate);
+  }, []);
 
   useEffect(() => {
     // 1. If context has webData, save it to localStorage
@@ -298,6 +308,17 @@ const DemoTemplate = () => {
       }
     }
   }, [commonDetails]);
+
+  const handleChangeTemplate = () => {
+    const keys = Object.keys(templates);
+    const currentIndex = keys.indexOf(currentTemplateIndex);
+    const nextIndex = (currentIndex + 1) % keys.length;
+
+    setCurrentTemplateIndex(keys[nextIndex]);
+    setToLocalStore("selectedTemplate", keys[nextIndex]);
+  };
+
+  const CurrentTemplate = templates[currentTemplateIndex]?.component;
 
   if (!data || !CurrentTemplate) {
     return (
