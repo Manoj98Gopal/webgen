@@ -9,6 +9,7 @@ import HeroSection from "@/components/templateSections/HeroSection";
 import Navbar from "@/components/templateSections/Navbar";
 import Services from "@/components/templateSections/Services";
 import Template2Layout from "@/components/templateSections/template2/Template2Layout";
+import Template3Layout from "@/components/templateSections/template3/Template3Layout";
 import Testimonials from "@/components/templateSections/Testimonials";
 import WhyChooseUs from "@/components/templateSections/WhyChooseUs";
 import React, { useState } from "react";
@@ -238,7 +239,8 @@ const page = () => {
       webData={webData}
       setWebData={setWebData}
     >
-      <Template2Layout webData={webData} />
+      {/* <Template2Layout webData={webData} /> */}
+      <Template3Layout webData={webData} />
     </EditTemplates>
   );
 };
