@@ -16,6 +16,7 @@ import { getFromLocalStore, setToLocalStore } from "./utils";
 import EditTemplates from "./EditTemplate/EditTemplates";
 import Template2Layout from "./templateSections/template2/Template2Layout";
 import { Loader2 } from "lucide-react";
+import Template3Layout from "./templateSections/template3/Template3Layout";
 
 // const webData = {
 //   navbar: {
@@ -256,8 +257,9 @@ const Template1 = ({ webData }) => {
 };
 
 const templates = {
+  template2: { id: "template2", component: Template2Layout },
   template1: { id: "template1", component: Template1 },
-  template2: { id: "template2", component: Template2Layout }
+  template3: { id: "template3", component: Template3Layout }
 };
 
 const DemoTemplate = () => {
@@ -272,9 +274,10 @@ const DemoTemplate = () => {
   const CurrentTemplate = templates[currentTemplateIndex]?.component;
 
   const handleChangeTemplate = () => {
-    setCurrentTemplateIndex(
-      currentTemplateIndex === "template1" ? "template2" : "template1"
-    );
+    const keys = Object.keys(templates); // ["template1", "template2", "template3"]
+    const currentIndex = keys.indexOf(currentTemplateIndex);
+    const nextIndex = (currentIndex + 1) % keys.length; // wrap around
+    setCurrentTemplateIndex(keys[nextIndex]);
   };
 
   useEffect(() => {

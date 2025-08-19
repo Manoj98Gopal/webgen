@@ -30,22 +30,24 @@ const HeroSection = ({
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button
-                size="lg"
-                className="bg-slate-800 hover:bg-slate-900 text-white px-8 py-4 text-lg font-medium shadow-lg"
-                onClick={() => scrollToSection?.("services")}
-              >
-                {cta1?.label}
-              </Button>
+              <a href={cta1?.link}>
+                <Button
+                  size="lg"
+                  className="bg-slate-800 hover:bg-slate-900 text-white px-8 py-4 text-lg font-medium shadow-lg"
+                >
+                  {cta1?.label}
+                </Button>
+              </a>
 
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white px-8 py-4 text-lg font-medium"
-                onClick={() => scrollToSection?.("contact")}
-              >
-                {cta2?.label}
-              </Button>
+              <a href={cta2.link}>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white px-8 py-4 text-lg font-medium"
+                >
+                  {cta2?.label}
+                </Button>
+              </a>
             </div>
           </div>
 
