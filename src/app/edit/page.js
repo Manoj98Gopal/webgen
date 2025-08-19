@@ -10,6 +10,7 @@ import Navbar from "@/components/templateSections/Navbar";
 import Services from "@/components/templateSections/Services";
 import Template2Layout from "@/components/templateSections/template2/Template2Layout";
 import Template3Layout from "@/components/templateSections/template3/Template3Layout";
+import Template4Layout from "@/components/templateSections/template4/Template4Layout";
 import Testimonials from "@/components/templateSections/Testimonials";
 import WhyChooseUs from "@/components/templateSections/WhyChooseUs";
 import React, { useState } from "react";
@@ -240,7 +241,8 @@ const page = () => {
       setWebData={setWebData}
     >
       {/* <Template2Layout webData={webData} /> */}
-      <Template3Layout webData={webData} />
+      {/* <Template3Layout webData={webData} /> */}
+      <Template4Layout webData={webData} />
     </EditTemplates>
   );
 };

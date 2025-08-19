@@ -17,6 +17,7 @@ import EditTemplates from "./EditTemplate/EditTemplates";
 import Template2Layout from "./templateSections/template2/Template2Layout";
 import { Loader2 } from "lucide-react";
 import Template3Layout from "./templateSections/template3/Template3Layout";
+import Template4Layout from "./templateSections/template4/Template4Layout";
 
 // const webData = {
 //   navbar: {
@@ -259,7 +260,8 @@ const Template1 = ({ webData }) => {
 const templates = {
   template2: { id: "template2", component: Template2Layout },
   template1: { id: "template1", component: Template1 },
-  template3: { id: "template3", component: Template3Layout }
+  template3: { id: "template3", component: Template3Layout },
+  template4: { id: "template4", component: Template4Layout }
 };
 
 const DemoTemplate = () => {
